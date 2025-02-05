@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using CatRescueApi.Models;
 using CatRescueApi.Services;
+using CatRescueApi.DTOs;
 
 // encapsulation, controller doesn't know how data is fetched, it only interacts with the service
 namespace CatRescueApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BreedController : ControllerBase
+    public class BreedsController : ControllerBase
     {
         private readonly IBreedService _breedService;
-        public BreadController(IBreedService breedService)
+        public BreedsController(IBreedService breedService)
         {
             _breedService = breedService;
         }
