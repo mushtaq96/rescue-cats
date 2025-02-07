@@ -1,31 +1,29 @@
-using System.Linq;
-using System.Threading.Tasks;
 using CatRescueApi.Models;
 using CatRescueApi.Services;
 using CatRescueApi.DTOs;
-using CatRescueApi.Data;
 using Xunit;
 
 public class BreedServiceTests : IClassFixture<TestFixture>
 {
-    private readonly IBreedService _breedService;
-    private readonly ApplicationDbContext _context;
+    private readonly TestFixture _fixture;
+    private readonly BreedService _breedService;
 
     public BreedServiceTests(TestFixture fixture)
     {
-        _context = fixture.DbContext;
-        _breedService = new BreedService(_context);
+        _fixture = fixture;
+        var context = _fixture.CreateContext();
+        _breedService = new BreedService(context);
 
         // Seed data
-        _context.Breeds.AddRange(new[]
+        context.Breeds.AddRange(new[]
         {
             new Breed { Id = 1, Name = "Siamese", IsGoodWithKids = true, IsGoodWithDogs = false },
             new Breed { Id = 2, Name = "Persian", IsGoodWithKids = false, IsGoodWithDogs = true }
         });
-        _context.SaveChanges();
+        context.SaveChanges();
 
         // clear tracked entities to prevent conflicts with multiple tests
-        _context.ChangeTracker.Clear();
+        context.ChangeTracker.Clear();
     }
 
     [Fact]

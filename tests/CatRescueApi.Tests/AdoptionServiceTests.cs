@@ -1,55 +1,74 @@
-using System.Threading.Tasks;
 using CatRescueApi.Models;
 using CatRescueApi.Services;
-using CatRescueApi.Data;
 using Xunit;
 
 public class AdoptionServiceTests : IClassFixture<TestFixture>
 {
-    private readonly IAdoptionService _adoptionService;
-    private readonly ApplicationDbContext _context;
-
+    private readonly TestFixture _fixture;
     public AdoptionServiceTests(TestFixture fixture)
     {
-        _context = fixture.DbContext;
-        _adoptionService = new AdoptionService(_context);
-
-        // Add test data
-        _context.Cats.Add(new Cat { Id = 1, Name = "Whiskers", BreedId = 1, Location = "Berlin", TenantId = "TenantA" });
-        _context.SaveChanges();
-
-        // clear tracked entities to prevent conflicts with multiple tests
-        _context.ChangeTracker.Clear();
+        _fixture = fixture;
     }
 
     [Fact]
     public async Task SubmitAdoptionAsync_CreatesNewAdoption()
     {
         // Arrange
-        var request = new AdoptionRequest { UserId = "User123", CatId = 1 , Email = "mushtaq@gmail.com", Address ="123 Cat Street"};
+        var context = _fixture.CreateContext();
+        var adoptionService = new AdoptionService(context);
+
+        var cat = new Cat
+        {
+            Id = 1,
+            Name = "Whiskers",
+            BreedId = 1,
+            Location = "Berlin",
+            TenantId = "TenantA"
+        };
+        context.Cats.Add(cat);
+        context.SaveChanges();
+        context.ChangeTracker.Clear();
+
+        var request = new AdoptionRequest
+        {
+            UserId = "User123",
+            CatId = 1,
+            Email = "mushtaq@gmail.com",
+            Address = "123 Cat Street"
+        };
 
         // Act
-        var result = await _adoptionService.SubmitAdoptionAsync(request);
+        var result = await adoptionService.SubmitAdoptionAsync(request);
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal("pending", result.Status);
         Assert.Equal(1, result.CatId);
+
+        // Dispose the context after the test
+        context.Dispose();
     }
 
     [Fact]
     public async Task GetAdoptionByIdAsync_ReturnsExistingAdoption()
     {
         // Arrange
+        var context = _fixture.CreateContext();
+        var adoptionService = new AdoptionService(context);
+
         var adoption = new Adoption { Id = 1, UserId = "User123", CatId = 1, Status = "pending" };
-        _context.Adoptions.Add(adoption);
-        _context.SaveChanges();
+        context.Adoptions.Add(adoption);
+        context.SaveChanges();
+        context.ChangeTracker.Clear();
 
         // Act
-        var result = await _adoptionService.GetAdoptionByIdAsync(1);
+        var result = await adoptionService.GetAdoptionByIdAsync(1);
 
         // Assert
         Assert.NotNull(result);
         Assert.Equal("pending", result.Status);
+
+        // Dispose the context after the test
+        context.Dispose();
     }
 }

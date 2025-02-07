@@ -1,30 +1,28 @@
-using System.Linq;
-using System.Threading.Tasks;
 using CatRescueApi.Models;
 using CatRescueApi.Services;
-using CatRescueApi.Data;
 using Xunit;
 
 public class CatServiceTests : IClassFixture<TestFixture>
 {
-    private readonly ICatService _catService;
-    private readonly ApplicationDbContext _context;
+    private readonly TestFixture _fixture;
+    private readonly CatService _catService;
 
     public CatServiceTests(TestFixture fixture)
     {
-        _context = fixture.DbContext;
-        _catService = new CatService(_context);
+        _fixture = fixture;
+        var context = _fixture.CreateContext();
+        _catService = new CatService(context);
 
         // Seed data
-        _context.Cats.AddRange(new[]
-        {
+        context.Cats.AddRange(
+        [
             new Cat { Id = 1, Name = "Whiskers", BreedId = 1, Location = "Berlin", TenantId = "TenantA" },
             new Cat { Id = 2, Name = "Mittens", BreedId = 2, Location = "Hamburg", TenantId = "TenantB" }
-        });
-        _context.SaveChanges();
-        
+        ]);
+        context.SaveChanges();
+
         // clear tracked entities to prevent conflicts with multiple tests
-        _context.ChangeTracker.Clear();
+        context.ChangeTracker.Clear();
     }
 
     [Fact]
