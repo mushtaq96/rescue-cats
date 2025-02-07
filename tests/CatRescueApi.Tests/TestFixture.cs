@@ -20,6 +20,11 @@ public class TestFixture : IDisposable
 
     public void Dispose()
     {
+        // clean up the in-memory database
+        Console.WriteLine("Disposing DB...");
+        DbContext.Database.EnsureDeleted(); // delete the in-memory database
         DbContext.Dispose(); // dispose of the in-memory database
+        Console.WriteLine("DB disposed");
     }
+
 }

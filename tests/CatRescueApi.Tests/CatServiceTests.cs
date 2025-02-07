@@ -22,6 +22,9 @@ public class CatServiceTests : IClassFixture<TestFixture>
             new Cat { Id = 2, Name = "Mittens", BreedId = 2, Location = "Hamburg", TenantId = "TenantB" }
         });
         _context.SaveChanges();
+        
+        // clear tracked entities to prevent conflicts with multiple tests
+        _context.ChangeTracker.Clear();
     }
 
     [Fact]

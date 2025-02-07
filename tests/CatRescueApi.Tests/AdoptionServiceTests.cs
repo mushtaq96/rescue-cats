@@ -14,16 +14,19 @@ public class AdoptionServiceTests : IClassFixture<TestFixture>
         _context = fixture.DbContext;
         _adoptionService = new AdoptionService(_context);
 
-        // Seed data
+        // Add test data
         _context.Cats.Add(new Cat { Id = 1, Name = "Whiskers", BreedId = 1, Location = "Berlin", TenantId = "TenantA" });
         _context.SaveChanges();
+
+        // clear tracked entities to prevent conflicts with multiple tests
+        _context.ChangeTracker.Clear();
     }
 
     [Fact]
     public async Task SubmitAdoptionAsync_CreatesNewAdoption()
     {
         // Arrange
-        var request = new AdoptionRequest { UserId = "User123", CatId = 1 };
+        var request = new AdoptionRequest { UserId = "User123", CatId = 1 , Email = "mushtaq@gmail.com", Address ="123 Cat Street"};
 
         // Act
         var result = await _adoptionService.SubmitAdoptionAsync(request);

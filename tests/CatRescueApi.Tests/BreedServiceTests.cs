@@ -23,6 +23,9 @@ public class BreedServiceTests : IClassFixture<TestFixture>
             new Breed { Id = 2, Name = "Persian", IsGoodWithKids = false, IsGoodWithDogs = true }
         });
         _context.SaveChanges();
+
+        // clear tracked entities to prevent conflicts with multiple tests
+        _context.ChangeTracker.Clear();
     }
 
     [Fact]
