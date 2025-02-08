@@ -10,6 +10,8 @@ builder.Services.AddControllers(); // register controllers, endpoints will be re
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IUserService, UserService>();
 // AddScoped registers the service with the DI container and creates a new instance of the service for each HTTP request
 builder.Services.AddScoped<ICatService, CatService>(); // register the CatService with the DI container 
 builder.Services.AddScoped<IBreedService, BreedService>(); // register the BreedService with the DI container

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using CatRescueApi.Models;
 using CatRescueApi.Services;
 using CatRescueApi.DTOs;
 
@@ -16,11 +15,21 @@ namespace CatRescueApi.Controllers
             _breedService = breedService;
         }
 
+        // GET api/breeds
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BreedDto>>> GetBreeds()
         {
-            var breeds = await _breedService.GetAllBreedsAsync();
+            var breeds = await _breedService.GetAllBreeds();
             return Ok(breeds);
+        }
+
+        // GET api/breeds/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BreedDto>> GetBreedById(int id)
+        {
+            var breed = await _breedService.GetBreedById(id);
+            if (breed == null) return NotFound();
+            return Ok(breed);
         }
     }
 }

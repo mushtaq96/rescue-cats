@@ -5,47 +5,29 @@ using CatRescueApi.DTOs;
 using CatRescueApi.Models;
 using CatRescueApi.Data;
 using Microsoft.EntityFrameworkCore; // needed for AsQueryable and ToListAsync
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // handle operations related to cat breeds (e.g., fetching, filtering, updating)
 namespace CatRescueApi.Services
 {
-    // Implement the IBreedService interface
-    public class BreedService: IBreedService
+    public class BreedService : DataService, IBreedService
     {
-        // inject the database context
-        private readonly ApplicationDbContext _context;
-        public BreedService(ApplicationDbContext context)
+        public BreedService(string dataPath = "./Data")
+                : base(dataPath)
         {
-            _context = context;
-        }
-        // Get all breeds
-        public async Task<IEnumerable<BreedDto>> GetAllBreedsAsync()
-        {
-            var breeds = await _context.Breeds.ToListAsync();
-            return breeds.Select(MapToDto);
-        }
-        public async Task<IEnumerable<BreedDto>> FilterBreedsAsync(FilterRequest request)
-        {
-            // Start with all breeds
-            var query = _context.Breeds.AsQueryable();
-            // Apply filters
-            if (request.IsGoodWithKids.HasValue)
-                query = query.Where(x => x.IsGoodWithKids == request.IsGoodWithKids);
-            if (request.IsGoodWithDogs.HasValue)
-                query = query.Where(x => x.IsGoodWithDogs == request.IsGoodWithDogs);
-            // Execute query
-            var breeds = await query.ToListAsync();
-            return breeds.Select(MapToDto);
         }
 
-        // Map Breed to BreedDto
-        private static BreedDto MapToDto(Breed breed) => new BreedDto
+        public async Task<List<Breed>> GetAllBreeds()
         {
-            Id = breed.Id,
-            Name = breed.Name,
-            IsGoodWithKids = breed.IsGoodWithKids,
-            IsGoodWithDogs = breed.IsGoodWithDogs,
-            Description = breed.Description
-        };
+            var data = await LoadJsonAsync<Dictionary<string, object>>("breeds");
+            return ((JArray)data["breeds"])?.ToObject<List<Breed>>() ?? new List<Breed>();
+        }
+
+        public async Task<Breed?> GetBreedById(int id)
+        {
+            var breeds = await GetAllBreeds();
+            return breeds.FirstOrDefault(b => b.Id == id);
+        }
     }
 }

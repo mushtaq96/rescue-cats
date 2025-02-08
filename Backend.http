@@ -4,3 +4,21 @@ GET {{Backend_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+# Register a new user
+POST http://localhost:5197/api/User HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "details": {
+        "firstName": "John",
+        "lastName": "Doe"
+    },
+    "location": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "CA",
+        "postalCode": "12345"
+    }
+}

@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CatRescueApi.DTOs;
+using CatRescueApi.Models;
 
 namespace CatRescueApi.Services
 {
     public interface IBreedService
     {
-        Task<IEnumerable<BreedDto>> GetAllBreedsAsync();
-        Task<IEnumerable<BreedDto>> FilterBreedsAsync(FilterRequest request);
+        Task<List<Breed>> GetAllBreeds();
+        Task<Breed?> GetBreedById(int id);
     }
 }
