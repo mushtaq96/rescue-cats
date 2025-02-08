@@ -19,7 +19,7 @@ namespace CatRescueApi.Controllers
 
         // GET api/cats?tenantId=123
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CatDto>>> GetCats(string tenantId)
+        public async Task<IActionResult> GetCats(string tenantId)
         {
             var cats = await _catService.GetCatsByTenantAsync(tenantId);
             return Ok(cats);
@@ -27,7 +27,7 @@ namespace CatRescueApi.Controllers
 
         // GET api/cats/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CatDto>> GetCatById(int id)
+        public async Task<IActionResult> GetCatById(int id)
         {
             var cat = await _catService.GetCatByIdAsync(id);
             if (cat == null) return NotFound();

@@ -7,6 +7,6 @@ namespace CatRescueApi.Services
     public interface ICatService
     {
         Task<IEnumerable<CatDto>> GetCatsByTenantAsync(string tenantId);
-        Task<CatDto> GetCatByIdAsync(int id);
+        Task<CatDto?> GetCatByIdAsync(int id);
     }
 }

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using CatRescueApi.DTOs;
 using CatRescueApi.Models;
+using CatRescueApi.Data;
+using Microsoft.EntityFrameworkCore; // needed for AsQueryable and ToListAsync
 
 // handle operations related to cat breeds (e.g., fetching, filtering, updating)
 namespace CatRescueApi.Services
@@ -41,9 +43,9 @@ namespace CatRescueApi.Services
         {
             Id = breed.Id,
             Name = breed.Name,
-            IsGoodWithKids = breed.IsGoodWithKids;
-            IsGoodWithDogs = breed.IsGoodWithDogs;
-            Description = breed.Description;
+            IsGoodWithKids = breed.IsGoodWithKids,
+            IsGoodWithDogs = breed.IsGoodWithDogs,
+            Description = breed.Description
         };
     }
 }

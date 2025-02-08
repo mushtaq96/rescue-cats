@@ -19,6 +19,10 @@ namespace CatRescueApi.Controllers
         [HttpPost]
         public async Task<ActionResult<AdoptionDto>> SubmitAdoption([FromBody] AdoptionRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Return validation errors
+            }
             var adoption = await _adoptionService.SubmitAdoptionAsync(request);
             return CreatedAtAction(nameof(GetAdoption), new { id = adoption.Id }, adoption);
         }

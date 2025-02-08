@@ -8,6 +8,6 @@ namespace CatRescueApi.Services
     public interface IAdoptionService
     {
         Task<AdoptionDto> SubmitAdoptionAsync(AdoptionRequest request);
-        Task<AdoptionDto> GetAdoptionByIdAsync(int id);
+        Task<AdoptionDto?> GetAdoptionByIdAsync(int id);
     }
 }

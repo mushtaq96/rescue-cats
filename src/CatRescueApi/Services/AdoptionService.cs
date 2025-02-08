@@ -3,22 +3,14 @@ using System.Threading.Tasks;
 using CatRescueApi.DTOs;
 using CatRescueApi.Models;
 using CatRescueApi.Data;
-
 namespace CatRescueApi.Services
 {
     public class AdoptionService : IAdoptionService
     {
         private readonly ApplicationDbContext _context;
-        public AdoptionService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-        // Get adoption by id
-        public async Task<AdoptionDto> GetAdoptionByIdAsync(int id)
-        {
-            var adoption = await _context.Adoptions.FindAsync(id);
-            return adoption != null ? MapToDto(adoption) : null;
-        }
+
+        public AdoptionService(ApplicationDbContext context) => _context = context;
+
         public async Task<AdoptionDto> SubmitAdoptionAsync(AdoptionRequest request)
         {
             var adoption = new Adoption
@@ -27,17 +19,17 @@ namespace CatRescueApi.Services
                 CatId = request.CatId,
                 Status = "pending"
             };
+
             _context.Adoptions.Add(adoption);
             await _context.SaveChangesAsync();
 
-            return MapToDto(adoption);
+            return AdoptionDto.MapToDto(adoption);
         }
-        private static AdoptionDto MapToDto(Adoption adoption) => new AdoptionDto
+
+        public async Task<AdoptionDto?> GetAdoptionByIdAsync(int id)
         {
-            Id = adoption.Id,
-            CatId = adoption.CatId,
-            UserId = adoption.UserId,
-            Status = adoption.Status
-        };
+            var adoption = await _context.Adoptions.FindAsync(id);
+            return adoption != null ? AdoptionDto.MapToDto(adoption) : null;
+        }
     }
 }

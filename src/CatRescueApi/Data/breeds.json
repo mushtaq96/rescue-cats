@@ -1,0 +1,16 @@
+{
+    "breeds": [
+        {
+            "id": 1,
+            "name": "Siamese",
+            "goodWithChildren": true,
+            "goodWithDogs": false
+        },
+        {
+            "id": 2,
+            "name": "Persian",
+            "goodWithChildren": false,
+            "goodWithDogs": true
+        }
+    ]
+}
