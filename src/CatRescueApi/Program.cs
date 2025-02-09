@@ -5,6 +5,11 @@ using CatRescueApi.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// read secret key configurations from appsettings.json
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
 builder.Services.AddControllers(); // register controllers, endpoints will be recognized by swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

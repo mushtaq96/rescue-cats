@@ -14,40 +14,47 @@ namespace CatRescueApi.Controllers
             _userService = userService;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
             var result = await _userService.RegisterUser(user);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var result = await _userService.AuthenticateLogin(request.Email, request.Password);
+            if (!result.IsSuccess) return Unauthorized(result.Error);
+            return Ok(new { Token = result.Value });
+        }
+        public class LoginRequest
+        {
+            public string Email { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+        }
 
         // function to get all users
-        [HttpGet("All")]
+        [HttpGet("all-users")]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetAllUsers();
             return Ok(result);
         }
-
+        // function to send verification email
         [HttpPost("send-verification-email/{userId}")]
         public async Task<IActionResult> SendVerificationEmail(int userId)
         {
             var result = await _userService.SendVerificationEmail(userId);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
-
+        // function to verify email
         [HttpGet("verify-email/{token}")]
         public async Task<IActionResult> VerifyEmail([FromRoute] string token)
         {
-            var users = await _userService.GetAllUsers();
-            var user = users.FirstOrDefault(u => u.VerificationToken == token && u.TokenExpiresAt > DateTime.UtcNow);
-            if (user == null)
-            {
-                return BadRequest("Invalid or expired token.");
-            }
-
-            var verificationResult = await _userService.VerifyEmail(user.Id);
-            return verificationResult.IsSuccess ? Ok("Email verified successfully!") : BadRequest(verificationResult.Error);
+            var result = await _userService.VerifyEmail(token);
+            return result.IsSuccess ? Ok("Email verified successfully!") : BadRequest(result.Error);
         }
+
+
     }
 }

@@ -12,6 +12,7 @@ namespace CatRescueApi.Models
         public bool IsVerified { get; set; } = false;
         public string? VerificationToken { get; set; }
         public DateTime? TokenExpiresAt { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 
     public class PersonalDetails
