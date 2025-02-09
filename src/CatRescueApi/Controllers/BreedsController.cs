@@ -31,5 +31,11 @@ namespace CatRescueApi.Controllers
             if (breed == null) return NotFound();
             return Ok(breed);
         }
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterBreeds([FromQuery] string? name = null, [FromQuery] bool? isIsGoodWithKids = null, [FromQuery] bool? isGoodWithDogs = null)
+        {
+            var filteredBreeds = await _breedService.FilterBreeds(name, isIsGoodWithKids, isGoodWithDogs);
+            return Ok(filteredBreeds.Select(BreedDto.MapToDto));
+        }
     }
 }
