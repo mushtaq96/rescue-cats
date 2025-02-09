@@ -7,18 +7,19 @@ using Microsoft.EntityFrameworkCore; // needed for ToListAsync
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using CatRescueApi.Validators;
+using FluentValidation;
 
 // manage operations for cats (e.g., adding new cats, retrieving by location)
 namespace CatRescueApi.Services
 {
     public class CatService : DataService, ICatService
     {
-        private readonly IBreedService _breedService;
+        private readonly IValidator<Cat> _catValidator;
 
-        public CatService(string dataPath = "./Data")
+        public CatService(IValidator<Cat> catValidator, string dataPath = "./Data")
             : base(dataPath)
         {
-            _breedService = new BreedService(dataPath);
+            _catValidator = catValidator;
         }
 
         public async Task<List<Cat>> GetAllCatsAsync()
@@ -41,7 +42,7 @@ namespace CatRescueApi.Services
 
         public async Task<Result<Cat>> RegisterCat(Cat cat)
         {
-            var validationResult = await new CatValidator().ValidateAsync(cat);
+            var validationResult = await _catValidator.ValidateAsync(cat);
             if (!validationResult.IsValid)
             {
                 return Result<Cat>.Fail(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));

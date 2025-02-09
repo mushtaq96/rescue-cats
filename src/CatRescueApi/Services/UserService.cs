@@ -5,7 +5,6 @@ using FluentValidation;
 public class UserService : DataService, IUserService
 {
     private readonly IValidator<User> _userValidator;
-    // private static int _nextUserId = 1;
 
     public UserService(IValidator<User> userValidator) : base("./Data")
     {

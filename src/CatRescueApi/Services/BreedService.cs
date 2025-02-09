@@ -1,4 +1,5 @@
 using CatRescueApi.Models;
+using FluentValidation;
 using Newtonsoft.Json.Linq;
 
 // handle operations related to cat breeds (e.g., fetching, filtering, updating)
@@ -6,9 +7,11 @@ namespace CatRescueApi.Services
 {
     public class BreedService : DataService, IBreedService
     {
-        public BreedService(string dataPath = "./Data")
+        private readonly IValidator<Breed> _breedValidator;
+        public BreedService(IValidator<Breed> breedValidtor, string dataPath = "./Data")
                 : base(dataPath)
         {
+            _breedValidator = breedValidtor;
         }
 
         public async Task<List<Breed>> GetAllBreeds()
