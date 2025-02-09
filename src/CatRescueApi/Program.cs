@@ -22,7 +22,16 @@ builder.Services.AddScoped<IBreedService, BreedService>(); // register the Breed
 builder.Services.AddScoped<IAdoptionService, AdoptionService>();
 // Add FluentValidation validators from the assembly containing the specified type
 builder.Services.AddValidatorsFromAssemblyContaining<AdoptionValidator>();
-
+// cors policy to allow requests from frontend
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
