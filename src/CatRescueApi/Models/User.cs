@@ -9,6 +9,9 @@ namespace CatRescueApi.Models
         public string Email { get; set; } = string.Empty;
         public PersonalDetails Details { get; set; } = new PersonalDetails();
         public Address Location { get; set; } = new Address();
+        public bool IsVerified { get; set; } = false;
+        public string? VerificationToken { get; set; }
+        public DateTime? TokenExpiresAt { get; set; }
     }
 
     public class PersonalDetails
