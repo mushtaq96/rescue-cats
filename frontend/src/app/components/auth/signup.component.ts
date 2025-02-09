@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +13,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SignupComponent {
   credentials = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: ''
   };

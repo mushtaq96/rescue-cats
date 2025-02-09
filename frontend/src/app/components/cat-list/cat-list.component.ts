@@ -9,7 +9,7 @@ import { Cat } from '../../models/cat.model';
   selector: 'app-cat-list',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './cat-list.html' 
+  templateUrl: './cat-list.html'
 })
 export class CatListComponent implements OnInit {
   allCats: Cat[] = [];
@@ -26,11 +26,14 @@ export class CatListComponent implements OnInit {
   constructor(private catService: CatService) { }
 
   ngOnInit() {
-    this.catService.getCats().subscribe(cats => {
+    const tenantId = 'tenantA'; // Replace with actual tenant ID
+    this.catService.getCats(tenantId).subscribe(cats => {
       this.allCats = cats;
       this.filteredCats = cats;
       this.uniqueBreeds = [...new Set(cats.map(cat => cat.breed))].sort();
     });
+    console.log('CatListComponent initialized');
+    console.log('allCats:', this.allCats);
   }
 
   applyFilters() {

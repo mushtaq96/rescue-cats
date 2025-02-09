@@ -1,7 +1,22 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
-  name: string;
+  details: {
+    firstName: string;
+    lastName: string;
+  };
+  location: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    latitude: number;
+    longitude: number;
+  };
+  isVerified: boolean;
+  verificationToken?: string;
+  tokenExpiresAt?: Date;
+  password: string;
   role: 'user' | 'admin';
 }
 
@@ -11,5 +26,6 @@ export interface LoginCredentials {
 }
 
 export interface SignupCredentials extends LoginCredentials {
-  name: string;
+  firstName: string;
+  lastName: string;
 }
