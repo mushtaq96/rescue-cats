@@ -119,3 +119,49 @@ src/.vs/config/applicationhost.config
 
 # all the files inside Data folder which is a subfolder nested somewhere in the project
 **/Data/**
+
+
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+.bazelrc.user
+
+# Dependencies
+*/node_modules
+
+# IDEs and editors
+.idea/*
+!.idea/runConfigurations/
+!.idea/codeStyleSettings.xml
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+xcuserdata/
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Angular CLI
+*/.angular/cache
+*/.ng_pkg_build/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Build Artifacts
+coverage/
+/reports
+/libpeerconnection.log
+/connect.lock
+.sass-cache
+/src/translations/template.*
