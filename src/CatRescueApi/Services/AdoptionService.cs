@@ -1,35 +1,48 @@
-using System.Linq;
-using System.Threading.Tasks;
-using CatRescueApi.DTOs;
 using CatRescueApi.Models;
-using CatRescueApi.Data;
+using Newtonsoft.Json.Linq;
+using CatRescueApi.Validators;
+
 namespace CatRescueApi.Services
 {
-    public class AdoptionService : IAdoptionService
+    public class AdoptionService : DataService, IAdoptionService
     {
-        private readonly ApplicationDbContext _context;
+        public AdoptionService(string dataPath = "./Data") : base(dataPath) { }
 
-        public AdoptionService(ApplicationDbContext context) => _context = context;
-
-        public async Task<AdoptionDto> SubmitAdoptionAsync(AdoptionRequest request)
+        public async Task<Result<Adoption>> SubmitAdoption(Adoption adoption)
         {
-            var adoption = new Adoption
+            var validationResult = await new AdoptionValidator().ValidateAsync(adoption);
+            if (!validationResult.IsValid)
             {
-                UserId = request.UserId,
-                CatId = request.CatId,
-                Status = "pending"
-            };
+                return Result<Adoption>.Fail(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
+            }
 
-            _context.Adoptions.Add(adoption);
-            await _context.SaveChangesAsync();
+            var data = await LoadJsonAsync<JObject>("applications");
+            if (data == null)
+            {
+                data = new JObject();
+                data["applications"] = new JArray();
+            }
+            var applicationsList = ((JArray)data["applications"])?.ToObject<List<Adoption>>() ?? new List<Adoption>();
 
-            return AdoptionDto.MapToDto(adoption);
+            // Assign a unique ID
+            adoption.Id = applicationsList.Count > 0 ? applicationsList.Max(a => a.Id) + 1 : 1;
+            adoption.CreatedAt = DateTime.UtcNow;
+
+            applicationsList.Add(adoption);
+            await SaveJsonAsync("applications", data);
+            return Result<Adoption>.Ok(adoption);
         }
 
-        public async Task<AdoptionDto?> GetAdoptionByIdAsync(int id)
+        public async Task<List<Adoption>> GetAllAdoptions()
         {
-            var adoption = await _context.Adoptions.FindAsync(id);
-            return adoption != null ? AdoptionDto.MapToDto(adoption) : null;
+            var data = await LoadJsonAsync<JObject>("applications");
+            var applicationsArray = data["applications"] as JArray;
+            return applicationsArray?.ToObject<List<Adoption>>() ?? new List<Adoption>();
+        }
+        public async Task<Adoption?> GetAdoptionById(int id)
+        {
+            var adoptions = await GetAllAdoptions();
+            return adoptions.FirstOrDefault(a => a.Id == id);
         }
     }
 }

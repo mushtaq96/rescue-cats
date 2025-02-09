@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using CatRescueApi.DTOs;
 using CatRescueApi.Models;
-using CatRescueApi.Data;
 using Microsoft.EntityFrameworkCore; // needed for ToListAsync
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

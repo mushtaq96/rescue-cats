@@ -17,22 +17,21 @@ namespace CatRescueApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AdoptionDto>> SubmitAdoption([FromBody] AdoptionRequest request)
+        public async Task<ActionResult<AdoptionDto>> SubmitAdoption([FromBody] Adoption adoption)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); // Return validation errors
-            }
-            var adoption = await _adoptionService.SubmitAdoptionAsync(request);
-            return CreatedAtAction(nameof(GetAdoption), new { id = adoption.Id }, adoption);
+            // Submit the adoption
+            var result = await _adoptionService.SubmitAdoption(adoption);
+            return result.IsSuccess
+                ? CreatedAtAction(nameof(GetAdoption), new { id = result.Value.Id }, AdoptionDto.MapToDto(result.Value))
+                : BadRequest(result.Error);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<AdoptionDto>> GetAdoption(int id)
         {
-            var adoption = await _adoptionService.GetAdoptionByIdAsync(id);
+            var adoption = await _adoptionService.GetAdoptionById(id);
             if (adoption == null) return NotFound();
-            return Ok(adoption);
+            return Ok(AdoptionDto.MapToDto(adoption));
         }
     }
 }

@@ -1,11 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using CatRescueApi.DTOs;
 using CatRescueApi.Models;
-using CatRescueApi.Data;
-using Microsoft.EntityFrameworkCore; // needed for AsQueryable and ToListAsync
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 // handle operations related to cat breeds (e.g., fetching, filtering, updating)

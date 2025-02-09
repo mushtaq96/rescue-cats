@@ -1,10 +1,7 @@
 using CatRescueApi.Models;
-using CatRescueApi.Data;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using FluentValidation;
-using FluentValidation.Results;
 public class UserService : DataService, IUserService
 {
     private readonly IValidator<User> _userValidator;
@@ -13,12 +10,6 @@ public class UserService : DataService, IUserService
     public UserService(IValidator<User> userValidator) : base("./Data")
     {
         _userValidator = userValidator;
-
-        // // Initialize next ID from existing users
-        // var data = LoadJsonAsync<JObject>("users").Result;
-        // var usersList = ((JArray)data["users"])?.ToObject<List<User>>();
-        // if (usersList != null && usersList.Count > 0)
-        //     _nextUserId = usersList.Max(u => u.Id) + 1;
     }
 
     public async Task<Result<User>> RegisterUser(User user)
@@ -41,7 +32,7 @@ public class UserService : DataService, IUserService
         {
             return Result<User>.Fail("Email already registered");
         }
-        // user.Id = _nextUserId++;
+
         user.Id = usersList.Count > 0 ? usersList.Max(u => u.Id) + 1 : 1;
 
         usersList.Add(user);

@@ -1,4 +1,3 @@
-using CatRescueApi.Data;
 using CatRescueApi.Services;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
@@ -15,9 +14,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 // AddScoped registers the service with the DI container and creates a new instance of the service for each HTTP request
 builder.Services.AddScoped<ICatService, CatService>(); // register the CatService with the DI container 
 builder.Services.AddScoped<IBreedService, BreedService>(); // register the BreedService with the DI container
-// Add DbContext configuration
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IAdoptionService, AdoptionService>();
 // Add FluentValidation validators from the assembly containing the specified type
 builder.Services.AddValidatorsFromAssemblyContaining<AdoptionValidator>();
 
