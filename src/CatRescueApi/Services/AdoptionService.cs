@@ -15,6 +15,11 @@ namespace CatRescueApi.Services
             {
                 return Result<Adoption>.Fail(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             }
+            // Perform background check
+            if (!PerformBackGroundCheck(adoption.UserId))
+            {
+                return Result<Adoption>.Fail("Background check failed.");
+            }
 
             var data = await LoadJsonAsync<JObject>("applications");
             if (data == null)
@@ -43,6 +48,12 @@ namespace CatRescueApi.Services
         {
             var adoptions = await GetAllAdoptions();
             return adoptions.FirstOrDefault(a => a.Id == id);
+        }
+        private bool PerformBackGroundCheck(string userId)
+        {
+            // Simulate a background check
+            Thread.Sleep(5000);
+            return true;
         }
     }
 }
