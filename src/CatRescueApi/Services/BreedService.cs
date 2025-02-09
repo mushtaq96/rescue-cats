@@ -94,6 +94,7 @@ namespace CatRescueApi.Services
             var breeds = await GetAllBreeds();
             return breeds.FirstOrDefault(b => b.Id == id);
         }
+        
         public async Task<List<Breed>> FilterBreeds(string? name = null, bool? isIsGoodWithKids = null, bool? isGoodWithDogs = null)
         {
             _logger.LogInformation("Filtering breeds based on provided criteria.");

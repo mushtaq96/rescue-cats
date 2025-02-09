@@ -22,7 +22,7 @@ namespace CatRescueApi.Controllers
             // Submit the adoption
             var result = await _adoptionService.SubmitAdoption(adoption);
             return result.IsSuccess
-                ? CreatedAtAction(nameof(GetAdoption), new { id = result.Value.Id }, AdoptionDto.MapToDto(result.Value))
+                ? Ok(result.Value)
                 : BadRequest(result.Error);
         }
 
@@ -32,6 +32,12 @@ namespace CatRescueApi.Controllers
             var adoption = await _adoptionService.GetAdoptionById(id);
             if (adoption == null) return NotFound();
             return Ok(AdoptionDto.MapToDto(adoption));
+        }
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] string newStatus)
+        {
+            var result = await _adoptionService.UpdateStatus(id, newStatus);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
     }
 }
