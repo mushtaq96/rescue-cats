@@ -1,4 +1,4 @@
-namespace CatRescueApi.Models
+namespace CatRescueApi.DTOs
 {
     public class LoginResponseDto
     {

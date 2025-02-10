@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CatRescueApi.Models;
+using CatRescueApi.DTOs;
 
 namespace CatRescueApi.Controllers
 {

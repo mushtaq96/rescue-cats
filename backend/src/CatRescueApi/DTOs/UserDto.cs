@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
-namespace CatRescueApi.Models
+using CatRescueApi.Models;
+namespace CatRescueApi.DTOs
 {
     public class UserDto
     {
@@ -44,15 +45,5 @@ namespace CatRescueApi.Models
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-    }
-
-    public class AddressDto
-    {
-        public string Street { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-        public string PostalCode { get; set; } = string.Empty;
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
     }
 }
