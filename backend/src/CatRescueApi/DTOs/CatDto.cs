@@ -12,26 +12,32 @@ namespace CatRescueApi.DTOs
         public required string TenantId { get; set; }
         public string ImageUrl { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public bool IsAdopted { get; set; }
+        public int Age { get; set; }
+        public bool GoodWithKids { get; set; }
+        public bool GoodWithDogs { get; set; }
 
-        public static CatDto MapToDto(Cat cat) => new()
+        public static CatDto MapToDto(Cat cat)
         {
-            Id = cat.Id,
-            Name = cat.Name,
-            BreedId = cat.BreedId,
-            Location = cat.Location,
-            TenantId = cat.TenantId,
-            ImageUrl = GetBreedImageUrl(cat.BreedId),
-            Description = cat.Description ?? string.Empty
-        };
-
-        private static string GetBreedImageUrl(int breedId)
-        {
-            var breedsJson = File.ReadAllText("./Data/breeds.json"); // Adjust path as needed
+            var breedsJson = File.ReadAllText("./Data/breeds.json");
             var breedsData = JObject.Parse(breedsJson);
-            var breeds = breedsData["breeds"]?.ToObject<List<Breed>>(); // Deserialize JSON to list of Breed objects
-            var breed = breeds?.FirstOrDefault(b => b.Id == breedId);
+            var breeds = breedsData["breeds"]?.ToObject<List<Breed>>();
 
-            return breed?.ImageUrl ?? ""; // Return ImageUrl or empty string if not found
+            return new CatDto
+            {
+                Id = cat.Id,
+                Name = cat.Name,
+                BreedId = cat.BreedId,
+                Location = cat.Location,
+                TenantId = cat.TenantId,
+                ImageUrl = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.ImageUrl ?? "",
+                Description = cat.Description ?? "",
+                IsAdopted = cat.IsAdopted,
+                Age = cat.Age,
+                GoodWithKids = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.IsGoodWithKids ?? false,
+                GoodWithDogs = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.IsGoodWithDogs ?? false
+            };
         }
+
     }
 }
