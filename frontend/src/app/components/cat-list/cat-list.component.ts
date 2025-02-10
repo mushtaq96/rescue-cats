@@ -26,14 +26,19 @@ export class CatListComponent implements OnInit {
   constructor(private catService: CatService) { }
 
   ngOnInit() {
-    const tenantId = 'tenantA'; // Replace with actual tenant ID
+    this.loadCats();
+  }
+  private loadCats() {
+    const tenantId = 'tenantA';
     this.catService.getCats(tenantId).subscribe(cats => {
       this.allCats = cats;
       this.filteredCats = cats;
       this.uniqueBreeds = [...new Set(cats.map(cat => cat.breed))].sort();
+      console.log('CatListComponent initialized');
+      console.log('allCats:', this.allCats);
+      console.log('uniqueBreeds:', this.uniqueBreeds);
     });
-    console.log('CatListComponent initialized');
-    console.log('allCats:', this.allCats);
+
   }
 
   applyFilters() {
