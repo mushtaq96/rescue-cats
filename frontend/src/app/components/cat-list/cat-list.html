@@ -3,14 +3,14 @@
   
   <!-- Display Mode Toggle -->
   <div class="flex justify-end mb-4">
-    <button 
+    <button
       (click)="toggleDisplayMode('list')"
       [class.bg-primary]="displayMode === 'list'"
       class="px-4 py-2 rounded-l-md border border-primary"
     >
       List
     </button>
-    <button 
+    <button
       (click)="toggleDisplayMode('map')"
       [class.bg-primary]="displayMode === 'map'"
       class="px-4 py-2 rounded-r-md border border-primary"
@@ -24,18 +24,17 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div>
         <label class="block text-sm font-medium text-text mb-1">Search by Name</label>
-        <input 
-          type="text" 
+        <input
+          type="text"
           [(ngModel)]="filters.name"
           (ngModelChange)="applyFilters()"
           placeholder="Search cats..."
           class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
         >
       </div>
-      
       <div>
         <label class="block text-sm font-medium text-text mb-1">Breed</label>
-        <select 
+        <select
           [(ngModel)]="filters.breed"
           (ngModelChange)="applyFilters()"
           class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
@@ -46,20 +45,19 @@
           }
         </select>
       </div>
-      
       <div>
         <label class="block text-sm font-medium text-text mb-1">Age Range</label>
         <div class="grid grid-cols-2 gap-2">
-          <input 
-            type="number" 
+          <input
+            type="number"
             [(ngModel)]="filters.minAge"
             (ngModelChange)="applyFilters()"
             placeholder="Min"
             min="0"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
           >
-          <input 
-            type="number" 
+          <input
+            type="number"
             [(ngModel)]="filters.maxAge"
             (ngModelChange)="applyFilters()"
             placeholder="Max"
@@ -68,9 +66,8 @@
           >
         </div>
       </div>
-      
       <div class="flex items-end">
-        <button 
+        <button
           (click)="resetFilters()"
           class="w-full bg-primary/10 text-primary px-4 py-2 rounded-md hover:bg-primary/20"
         >
@@ -103,18 +100,17 @@
                 {{cat.goodWithDogs ? 'Dog friendly' : 'Prefers no dogs'}}
               </span>
             </div>
-            <a [routerLink]="['/cats', cat.id]" 
+            <a [routerLink]="['/cats', cat.id]"
                class="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90">
               View Details
             </a>
           </div>
         </div>
       }
-
       @if (filteredCats.length === 0) {
         <div class="col-span-full text-center py-8">
           <p class="text-text text-lg">No cats found matching your criteria</p>
-          <button 
+          <button
             (click)="resetFilters()"
             class="mt-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
           >
@@ -125,9 +121,15 @@
     </div>
   } @else {
     <!-- Map Display -->
-    <div class="h-[600px] bg-gray-200 rounded-lg">
-      <!-- Map integration -->
-      <p class="text-center py-8 text-text">Map display coming soon!</p>
+    <div class="relative h-[600px] bg-gray-200 rounded-lg">
+      <div leaflet
+           [leafletOptions]="mapOptions"
+           (leafletMapReady)="onMapReady($event)"
+           class="h-full w-full">
+      </div>
+      <div *ngIf="mapError" class="absolute inset-0 flex items-center justify-center bg-red-500/80 text-white rounded-lg z-10">
+        {{mapError}}
+      </div>
     </div>
   }
 </div>

@@ -9,6 +9,14 @@ export interface Cat {
   goodWithKids: boolean;
   goodWithDogs: boolean;
   playfulness: number; // Scale of 1-5
+  location: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export interface AdoptionApplication {

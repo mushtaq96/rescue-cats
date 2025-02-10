@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { routes } from './app/app.routes';
 import { AuthService } from './app/services/auth.service';
 import { provideHttpClient } from '@angular/common/http';
+import 'leaflet';
 
 // Angular version 18
 @Component({
@@ -19,7 +20,7 @@ import { provideHttpClient } from '@angular/common/http';
       <a class="text-2xl font-bold cursor-pointer" routerLink="/cats">Cat Rescue Portal</a>
         @if (authService.currentUser$ | async; as user) {
           <div class="flex items-center gap-4 cursor-pointer">
-            <span>Welcome, {{user.details?.firstName}}</span>
+            <span>Welcome, {{user?.details?.firstName}}</span>
             <button 
               (click)="logout()"
               class="bg-white text-primary px-4 py-2 rounded-md hover:bg-gray-100"

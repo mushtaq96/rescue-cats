@@ -31,13 +31,21 @@
               "glob": "**/*",
               "input": "src/assets/",
               "output": "/assets/"
+            },{
+              "glob": "**/*",
+              "input": "public"
+            },
+            {
+              "glob": "**/*",
+              "input": "./node_modules/leaflet/dist/images",
+              "output": "assets/"
             }],
             "index": "src/index.html",
             "browser": "src/main.ts",
             "outputPath": "dist/demo",
             "polyfills": ["zone.js"],
             "scripts": [],
-            "styles": ["src/global_styles.css"],
+            "styles": ["src/global_styles.css","node_modules/leaflet/dist/leaflet.css"],
             "tsConfig": "tsconfig.app.json"
           }
         },
