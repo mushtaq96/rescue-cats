@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CatService } from '../../services/cat.service';
 import { Cat } from '../../models/cat.model';
@@ -89,14 +89,33 @@ export class CatListComponent implements OnInit {
     if (this.map) {
       this.filteredCats.forEach(cat => {
         const marker = L.marker([cat.location.latitude, cat.location.longitude], {
-          title: cat.name
+          title: cat.name,
         }).bindPopup(`
-          <b>${cat.name}</b><br>
-          ${cat.breed}<br>
-          ${cat.location.city}
+          <div class="cat-popup">
+            <img src="${cat.imageUrl}" alt="${cat.name}" style="max-width: 150px; max-height: 150px;"
+            onclick="window.location.href='/cats/${cat.id}'">
+            <b>${cat.name}</b><br>
+            ${cat.breed}<br>
+            ${cat.location.city}
+           </div>
         `);
+
         marker.addTo(this.map);
       });
     }
   }
 }
+
+const styles = `
+.cat-popup {
+    max-width: 200px;
+    padding: 05px;
+}
+.cat-popup img {
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+`;
+const styleSheet = document.createElement("style");
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
