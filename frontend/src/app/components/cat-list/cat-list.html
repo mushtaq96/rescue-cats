@@ -70,7 +70,7 @@
       <!-- Cat Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (cat of filteredCats; track cat.id) {
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg">
             <img [src]="cat.imageUrl" [alt]="cat.name" class="w-full h-48 object-cover">
             <div class="p-4">
               <h2 class="text-xl font-semibold text-text">{{cat.name}}</h2>
