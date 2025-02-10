@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,14 +11,14 @@ import { provideHttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, RouterLink],
   template: `
     <header class="bg-primary text-white p-4">
       <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-bold">Cat Rescue Portal</h1>
+        <a class="text-2xl font-bold cursor-pointer" routerLink="/cats">Cat Rescue Portal</a>
         @if (authService.currentUser$ | async; as user) {
           <div class="flex items-center gap-4">
-            <span>Welcome, {{user.details.firstName}}</span>
+            <span>Welcome, {{user.details?.firstName}}</span>
             <button 
               (click)="logout()"
               class="bg-white text-primary px-4 py-2 rounded-md hover:bg-gray-100"
