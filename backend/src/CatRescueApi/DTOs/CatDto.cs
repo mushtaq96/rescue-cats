@@ -16,6 +16,8 @@ namespace CatRescueApi.DTOs
         public int Age { get; set; }
         public bool GoodWithKids { get; set; }
         public bool GoodWithDogs { get; set; }
+        public int Playfulness { get; set; }
+        public string BreedName { get; set; } = string.Empty;
 
         public static CatDto MapToDto(Cat cat)
         {
@@ -28,6 +30,7 @@ namespace CatRescueApi.DTOs
                 Id = cat.Id,
                 Name = cat.Name,
                 BreedId = cat.BreedId,
+                BreedName = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.Name ?? "",
                 Location = cat.Location,
                 TenantId = cat.TenantId,
                 ImageUrl = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.ImageUrl ?? "",
@@ -35,7 +38,8 @@ namespace CatRescueApi.DTOs
                 IsAdopted = cat.IsAdopted,
                 Age = cat.Age,
                 GoodWithKids = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.IsGoodWithKids ?? false,
-                GoodWithDogs = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.IsGoodWithDogs ?? false
+                GoodWithDogs = breeds?.FirstOrDefault(b => b.Id == cat.BreedId)?.IsGoodWithDogs ?? false,
+                Playfulness = cat.Playfulness
             };
         }
 

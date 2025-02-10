@@ -17,7 +17,7 @@ export interface User {
   verificationToken?: string;
   tokenExpiresAt?: Date;
   password: string;
-  role: 'user' | 'admin';
+  role?: 'user' | 'admin';
 }
 
 export interface LoginCredentials {

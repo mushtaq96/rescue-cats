@@ -26,6 +26,7 @@ export class CatService {
   // The getCatById method returns an observable that emits a single Cat object with the specified ID.
   getCatById(id: string): Observable<Cat | undefined> {
     return this.http.get<Cat>(`${this.baseUrl}/Cats/${id}`).pipe(
+      tap(response => console.log('Successfully fetched cat:', response)),
       catchError((error: HttpErrorResponse) => throwError(() => new Error(error.error || 'An error occurred fetching the cat'))
       )
     );

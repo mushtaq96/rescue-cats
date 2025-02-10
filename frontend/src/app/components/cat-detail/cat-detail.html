@@ -13,7 +13,7 @@
                   <p><strong>Age:</strong> {{cat.age}} years</p>
                   <p><strong>Playfulness:</strong> 
                     @for (star of [1,2,3,4,5]; track star) {
-                      <span [class]="star <= cat.playfulness ? 'text-primary' : 'text-gray-300'">★</span>
+                      <span [class]="star <= cat.playfulness ? 'text-primary' : 'text-gray-300'"> ★</span>
                     }
                   </p>
                   <p><strong>Good with kids:</strong> {{cat.goodWithKids ? 'Yes' : 'No'}}</p>

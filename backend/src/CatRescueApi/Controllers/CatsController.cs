@@ -32,7 +32,8 @@ namespace CatRescueApi.Controllers
         {
             var cat = await _catService.GetCatByIdAsync(id);
             if (cat == null) return NotFound();
-            return Ok(cat);
+            var catDto = CatDto.MapToDto(cat);
+            return Ok(catDto);
         }
 
         // POST api/cats

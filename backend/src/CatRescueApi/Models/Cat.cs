@@ -10,5 +10,6 @@ namespace CatRescueApi.Models
         public string TenantId { get; set; } = string.Empty;
         public bool IsAdopted { get; set; }
         public int Age { get; set; }
+        public int Playfulness { get; set; }
     }
 }

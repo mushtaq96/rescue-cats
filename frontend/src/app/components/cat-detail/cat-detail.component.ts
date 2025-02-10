@@ -30,7 +30,7 @@ export class CatDetailComponent implements OnInit {
       adoptionReason: ['', [Validators.required, Validators.minLength(50)]]
     });
   }
-
+  // it's used to get the route parameter from the URL
   ngOnInit() {
     const catId = this.route.snapshot.paramMap.get('id');
     if (catId) {
