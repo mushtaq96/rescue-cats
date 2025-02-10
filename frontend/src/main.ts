@@ -15,9 +15,10 @@ import { provideHttpClient } from '@angular/common/http';
   template: `
     <header class="bg-primary text-white p-4">
       <div class="container mx-auto flex justify-between items-center">
-        <a class="text-2xl font-bold cursor-pointer" routerLink="/cats">Cat Rescue Portal</a>
+      <img src="assets/images/cat-logo.svg" routerLink="/cats" alt="Cat Rescue Logo" class="h-16 w-16 cursor-pointer" />
+      <a class="text-2xl font-bold cursor-pointer" routerLink="/cats">Cat Rescue Portal</a>
         @if (authService.currentUser$ | async; as user) {
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 cursor-pointer">
             <span>Welcome, {{user.details?.firstName}}</span>
             <button 
               (click)="logout()"
