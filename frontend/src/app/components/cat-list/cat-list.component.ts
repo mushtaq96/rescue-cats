@@ -15,6 +15,7 @@ export class CatListComponent implements OnInit {
   allCats: Cat[] = [];
   filteredCats: Cat[] = [];
   uniqueBreeds: string[] = [];
+  displayMode: 'list' | 'map' = 'list';
 
   filters = {
     name: '',
@@ -28,6 +29,7 @@ export class CatListComponent implements OnInit {
   ngOnInit() {
     this.loadCats();
   }
+
   private loadCats() {
     const tenantId = 'tenantA';
     this.catService.getCats(tenantId).subscribe(cats => {
@@ -38,25 +40,14 @@ export class CatListComponent implements OnInit {
       console.log('allCats:', this.allCats);
       console.log('uniqueBreeds:', this.uniqueBreeds);
     });
-
   }
 
   applyFilters() {
     this.filteredCats = this.allCats.filter(cat => {
-      // Name filter
-      const nameMatch = !this.filters.name ||
-        cat.name.toLowerCase().includes(this.filters.name.toLowerCase());
-
-      // Breed filter
-      const breedMatch = !this.filters.breed ||
-        cat.breed === this.filters.breed;
-
-      // Age filter
-      const minAgeMatch = !this.filters.minAge ||
-        cat.age >= this.filters.minAge;
-      const maxAgeMatch = !this.filters.maxAge ||
-        cat.age <= this.filters.maxAge;
-
+      const nameMatch = !this.filters.name || cat.name.toLowerCase().includes(this.filters.name.toLowerCase());
+      const breedMatch = !this.filters.breed || cat.breed === this.filters.breed;
+      const minAgeMatch = !this.filters.minAge || cat.age >= this.filters.minAge;
+      const maxAgeMatch = !this.filters.maxAge || cat.age <= this.filters.maxAge;
       return nameMatch && breedMatch && minAgeMatch && maxAgeMatch;
     });
   }
@@ -69,5 +60,9 @@ export class CatListComponent implements OnInit {
       maxAge: null
     };
     this.filteredCats = this.allCats;
+  }
+
+  toggleDisplayMode(mode: 'list' | 'map') {
+    this.displayMode = mode;
   }
 }
