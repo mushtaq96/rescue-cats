@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
-
+app.UseCors();
 // routes defined in the controllers will be recognized by the routing middleware
 app.MapControllers();
 
