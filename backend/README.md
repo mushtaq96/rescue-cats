@@ -197,3 +197,8 @@ Files in `./Data` directory:
 ##  Development
 
 Run with `dotnet run`. Swagger UI available at `https://localhost:5197/swagger`.
+
+## Sample Visualization - Authentication Flow
+
+![alt text](AuthenticationFlowVisualization.png)
+

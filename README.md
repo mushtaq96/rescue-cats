@@ -24,6 +24,11 @@ A full-stack application for managing cat adoptions, featuring both frontend and
 - Authentication: JWT
 - API Documentation: Swagger
 
+## Architecture Overview
+The project follows a layered architecture with clear separation of concerns:
+
+![alt text](ArchitectureOverview.png)
+
 ## Getting Started
 
 1. Clone the repository
