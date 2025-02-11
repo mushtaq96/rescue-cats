@@ -37,10 +37,6 @@ namespace CatRescueApi.Services
             {
                 return Result<Adoption>.Fail("Another application for this cat is already pending.");
             }
-            // Assign a unique ID
-            // adoption.Id = applicationsList.Count > 0 ? applicationsList.Max(a => a.Id) + 1 : 1;
-            // adoption.CreatedAt = DateTime.UtcNow;
-            // adoption.Status = "pending";
 
             applicationsList.Add(adoption);
             data["applications"] = JToken.FromObject(applicationsList);
@@ -100,6 +96,12 @@ namespace CatRescueApi.Services
             await SaveJsonAsync("applications", data);
 
             return Result<bool>.Ok(true);
+        }
+
+        public async Task<bool> CheckIfUserHasApplied(string catId, string userId)
+        {
+            var adoptions = await GetAllAdoptions();
+            return adoptions.Any(a => a.CatId == int.Parse(catId) && a.UserId == int.Parse(userId) && a.Status == "pending");
         }
     }
 }

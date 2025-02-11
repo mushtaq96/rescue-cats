@@ -1,130 +1,131 @@
 <div class="container mx-auto px-4 py-8">
-      @if (cat) {
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <img [src]="cat.imageUrl" [alt]="cat.name" class="w-full h-64 object-cover">
-          <div class="p-6">
-            <h1 class="text-3xl font-bold mb-4 text-text">{{cat.name}}</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h2 class="text-xl font-semibold mb-2 text-text">About {{cat.name}}</h2>
-                <p class="text-text mb-4">{{cat.description}}</p>
-                <div class="space-y-2 text-text">
-                  <p><strong>Breed:</strong> {{cat.breed}}</p>
-                  <p><strong>Age:</strong> {{cat.age}} years</p>
-                  <p><strong>Playfulness:</strong> 
-                    @for (star of [1,2,3,4,5]; track star) {
-                      <span [class]="star <= cat.playfulness ? 'text-primary' : 'text-gray-300'"> ★</span>
-                    }
-                  </p>
-                  <p><strong>Good with kids:</strong> {{cat.goodWithKids ? 'Yes' : 'No'}}</p>
-                  <p><strong>Good with dogs:</strong> {{cat.goodWithDogs ? 'Yes' : 'No'}}</p>
-                </div>
-              </div>
-              
-              @if (!cat.isAdopted) {
-                <div>
-                  <h2 class="text-xl font-semibold mb-4 text-text">Adopt {{cat.name}}</h2>
-                  <form [formGroup]="adoptionForm" (ngSubmit)="submitApplication()" class="space-y-4">
-                    <!-- Personal Details Section -->
-                    <div class="space-y-4">
-                      <h3 class="text-lg font-medium text-text">Personal Details</h3>
-                      
-                      <div>
-                        <label class="block text-sm font-medium text-text">Full Name</label>
-                        <input type="text" formControlName="fullName"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                        @if (adoptionForm.get('fullName')?.errors?.['required'] && adoptionForm.get('fullName')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Full name is required</p>
-                        }
-                      </div>
-
-                      <div>
-                        <label class="block text-sm font-medium text-text">Email Address</label>
-                        <input type="email" formControlName="email"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                        @if (adoptionForm.get('email')?.errors?.['required'] && adoptionForm.get('email')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Email is required</p>
-                        }
-                        @if (adoptionForm.get('email')?.errors?.['email'] && adoptionForm.get('email')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Please enter a valid email address</p>
-                        }
-                      </div>
-
-                      <div>
-                        <label class="block text-sm font-medium text-text">Phone Number</label>
-                        <input type="tel" formControlName="phone"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                        @if (adoptionForm.get('phone')?.errors?.['required'] && adoptionForm.get('phone')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Phone number is required</p>
-                        }
-                        @if (adoptionForm.get('phone')?.errors?.['pattern'] && adoptionForm.get('phone')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Please enter a valid phone number</p>
-                        }
-                      </div>
-                    </div>
-
-                    <!-- Address Section -->
-                    <div class="space-y-4">
-                      <h3 class="text-lg font-medium text-text">Address Information</h3>
-                      
-                      <div>
-                        <label class="block text-sm font-medium text-text">Street Address</label>
-                        <input type="text" formControlName="streetAddress"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                        @if (adoptionForm.get('streetAddress')?.errors?.['required'] && adoptionForm.get('streetAddress')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Street address is required</p>
-                        }
-                      </div>
-
-                      <div class="grid grid-cols-2 gap-4">
-                        <div>
-                          <label class="block text-sm font-medium text-text">City</label>
-                          <input type="text" formControlName="city"
-                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                          @if (adoptionForm.get('city')?.errors?.['required'] && adoptionForm.get('city')?.touched) {
-                            <p class="mt-1 text-red-500 text-sm">City is required</p>
-                          }
-                        </div>
-
-                        <div>
-                          <label class="block text-sm font-medium text-text">Postal Code</label>
-                          <input type="text" formControlName="postalCode"
-                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                          @if (adoptionForm.get('postalCode')?.errors?.['required'] && adoptionForm.get('postalCode')?.touched) {
-                            <p class="mt-1 text-red-500 text-sm">Postal code is required</p>
-                          }
-                          @if (adoptionForm.get('postalCode')?.errors?.['pattern'] && adoptionForm.get('postalCode')?.touched) {
-                            <p class="mt-1 text-red-500 text-sm">Please enter a valid postal code</p>
-                          }
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Additional Information -->
-                    <div class="space-y-4">
-                      <h3 class="text-lg font-medium text-text">Additional Information</h3>
-                      
-                      <div>
-                        <label class="block text-sm font-medium text-text">Why would you like to adopt {{cat.name}}?</label>
-                        <textarea formControlName="adoptionReason" rows="4"
-                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"></textarea>
-                        @if (adoptionForm.get('adoptionReason')?.errors?.['required'] && adoptionForm.get('adoptionReason')?.touched) {
-                          <p class="mt-1 text-red-500 text-sm">Please tell us why you'd like to adopt {{cat.name}}</p>
-                        }
-                      </div>
-                    </div>
-
-                    <button type="submit" 
-                            [disabled]="!adoptionForm.valid"
-                            [class]="!adoptionForm.valid ? 'opacity-50 cursor-not-allowed' : ''"
-                            class="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90">
-                      Submit Application
-                    </button>
-                  </form>
-                </div>
+  @if (cat) {
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <img [src]="cat.imageUrl" [alt]="cat.name" class="w-full h-64 object-cover">
+    <div class="p-6">
+      <h1 class="text-3xl font-bold mb-4 text-text">{{cat.name}}</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 class="text-xl font-semibold mb-2 text-text">About {{cat.name}}</h2>
+          <p class="text-text mb-4">{{cat.description}}</p>
+          <div class="space-y-2 text-text">
+            <p><strong>Breed:</strong> {{cat.breed}}</p>
+            <p><strong>Age:</strong> {{cat.age}} years</p>
+            <p><strong>Playfulness:</strong>
+              @for (star of [1,2,3,4,5]; track star) {
+              <span [class]="star <= cat.playfulness ? 'text-primary' : 'text-gray-300'"> ★</span>
               }
-            </div>
+            </p>
+            <p><strong>Good with kids:</strong> {{cat.goodWithKids ? 'Yes' : 'No'}}</p>
+            <p><strong>Good with dogs:</strong> {{cat.goodWithDogs ? 'Yes' : 'No'}}</p>
           </div>
         </div>
-      }
+        @if (!cat.isAdopted && !hasApplied) {
+        <div>
+          <h2 class="text-xl font-semibold mb-4 text-text">Adopt {{cat.name}}</h2>
+          <form [formGroup]="adoptionForm" (ngSubmit)="submitApplication()" class="space-y-4">
+            <!-- Personal Details Section -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-text">Personal Details</h3>
+              <div>
+                <label class="block text-sm font-medium text-text">Full Name</label>
+                <input type="text" formControlName="fullName"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                @if (adoptionForm.get('fullName')?.errors?.['required'] && adoptionForm.get('fullName')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Full name is required</p>
+                }
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-text">Email Address</label>
+                <input type="email" formControlName="email"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                @if (adoptionForm.get('email')?.errors?.['required'] && adoptionForm.get('email')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Email is required</p>
+                }
+                @if (adoptionForm.get('email')?.errors?.['email'] && adoptionForm.get('email')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Please enter a valid email address</p>
+                }
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-text">Phone Number</label>
+                <input type="tel" formControlName="phone"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                @if (adoptionForm.get('phone')?.errors?.['required'] && adoptionForm.get('phone')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Phone number is required</p>
+                }
+                @if (adoptionForm.get('phone')?.errors?.['pattern'] && adoptionForm.get('phone')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Please enter a valid phone number</p>
+                }
+              </div>
+            </div>
+            <!-- Address Section -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-text">Address Information</h3>
+              <div>
+                <label class="block text-sm font-medium text-text">Street Address</label>
+                <input type="text" formControlName="streetAddress"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                @if (adoptionForm.get('streetAddress')?.errors?.['required'] &&
+                adoptionForm.get('streetAddress')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Street address is required</p>
+                }
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-text">City</label>
+                  <input type="text" formControlName="city"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                  @if (adoptionForm.get('city')?.errors?.['required'] && adoptionForm.get('city')?.touched) {
+                  <p class="mt-1 text-red-500 text-sm">City is required</p>
+                  }
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-text">Postal Code</label>
+                  <input type="text" formControlName="postalCode"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                  @if (adoptionForm.get('postalCode')?.errors?.['required'] && adoptionForm.get('postalCode')?.touched)
+                  {
+                  <p class="mt-1 text-red-500 text-sm">Postal code is required</p>
+                  }
+                  @if (adoptionForm.get('postalCode')?.errors?.['pattern'] && adoptionForm.get('postalCode')?.touched) {
+                  <p class="mt-1 text-red-500 text-sm">Please enter a valid postal code</p>
+                  }
+                </div>
+              </div>
+            </div>
+            <!-- Additional Information -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-text">Additional Information</h3>
+              <div>
+                <label class="block text-sm font-medium text-text">Why would you like to adopt {{cat.name}}?</label>
+                <textarea formControlName="adoptionReason" rows="4"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"></textarea>
+                @if (adoptionForm.get('adoptionReason')?.errors?.['required'] &&
+                adoptionForm.get('adoptionReason')?.touched) {
+                <p class="mt-1 text-red-500 text-sm">Please tell us why you'd like to adopt {{cat.name}}</p>
+                }
+              </div>
+            </div>
+            <button type="submit" [disabled]="!adoptionForm.valid || isSubmitting"
+              [class]="!adoptionForm.valid ? 'opacity-50 cursor-not-allowed' : ''"
+              class="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90">
+              {{isSubmitting ? 'Submitting...' : 'Submit Application'}}
+            </button>
+          </form>
+        </div>
+        } @else if (hasApplied) {
+        <div class="p-6 text-center text-primary">
+          <p>You have already submitted an application for this cat.</p>
+        </div>
+        }
+      </div>
     </div>
+  </div>
+  }
+  <!-- Success message -->
+  @if (showSuccess) {
+  <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg animate-fade-in">
+    Application submitted successfully!
+  </div>
+  }
+</div>

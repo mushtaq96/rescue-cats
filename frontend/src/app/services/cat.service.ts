@@ -12,6 +12,20 @@ export class CatService {
   constructor(private http: HttpClient) {
     console.log('CatService initialized');
   }
+  // The checkIfUserHasApplied method sends a GET request to the /Adoptions/check endpoint with the provided cat and user IDs.
+  checkIfUserHasApplied(catId: string, userId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}/Adoptions/check`, {
+      params: {
+        catId,
+        userId
+      }
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error checking application status:', error);
+        return of(false);
+      })
+    );
+  }
 
   // The getCats method returns an observable that emits an array of Cat objects.
   getCats(tenantId: string): Observable<Cat[]> {
