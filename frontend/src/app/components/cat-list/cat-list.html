@@ -1,106 +1,135 @@
 <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-6 text-text">Our Cats</h1>
-      
-      <!-- Search and Filters -->
-      <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-text mb-1">Search by Name</label>
-            <input 
-              type="text" 
-              [(ngModel)]="filters.name"
-              (ngModelChange)="applyFilters()"
-              placeholder="Search cats..."
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-            >
-          </div>
-          
-          <div>
-            <label class="block text-sm font-medium text-text mb-1">Breed</label>
-            <select 
-              [(ngModel)]="filters.breed"
-              (ngModelChange)="applyFilters()"
-              class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-            >
-              <option value="">All Breeds</option>
-              @for (breed of uniqueBreeds; track breed) {
-                <option [value]="breed">{{breed}}</option>
-              }
-            </select>
-          </div>
-          
-          <div>
-            <label class="block text-sm font-medium text-text mb-1">Age Range</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input 
-                type="number" 
-                [(ngModel)]="filters.minAge"
-                (ngModelChange)="applyFilters()"
-                placeholder="Min"
-                min="0"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-              >
-              <input 
-                type="number" 
-                [(ngModel)]="filters.maxAge"
-                (ngModelChange)="applyFilters()"
-                placeholder="Max"
-                min="0"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
-              >
-            </div>
-          </div>
-          
-          <div class="flex items-end">
-            <button 
-              (click)="resetFilters()"
-              class="w-full bg-primary/10 text-primary px-4 py-2 rounded-md hover:bg-primary/20"
-            >
-              Reset Filters
-            </button>
-          </div>
+  <h1 class="text-3xl font-bold mb-6 text-text">Our Cats</h1>
+  
+  <!-- Display Mode Toggle -->
+  <div class="flex justify-end mb-4">
+    <button
+      (click)="toggleDisplayMode('list')"
+      [class.bg-primary]="displayMode === 'list'"
+      class="px-4 py-2 rounded-l-md border border-primary"
+    >
+      List
+    </button>
+    <button
+      (click)="toggleDisplayMode('map')"
+      [class.bg-primary]="displayMode === 'map'"
+      class="px-4 py-2 rounded-r-md border border-primary"
+    >
+      Map
+    </button>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-text mb-1">Search by Name</label>
+        <input
+          type="text"
+          [(ngModel)]="filters.name"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search cats..."
+          class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+        >
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-text mb-1">Breed</label>
+        <select
+          [(ngModel)]="filters.breed"
+          (ngModelChange)="applyFilters()"
+          class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+        >
+          <option value="">All Breeds</option>
+          @for (breed of uniqueBreeds; track breed) {
+            <option [value]="breed">{{breed}}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-text mb-1">Age Range</label>
+        <div class="grid grid-cols-2 gap-2">
+          <input
+            type="number"
+            [(ngModel)]="filters.minAge"
+            (ngModelChange)="applyFilters()"
+            placeholder="Min"
+            min="0"
+            class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          >
+          <input
+            type="number"
+            [(ngModel)]="filters.maxAge"
+            (ngModelChange)="applyFilters()"
+            placeholder="Max"
+            min="0"
+            class="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+          >
         </div>
       </div>
-
-      <!-- Results Count -->
-      <p class="text-text mb-4">
-        Showing {{filteredCats.length}} {{filteredCats.length === 1 ? 'cat' : 'cats'}}
-      </p>
-
-      <!-- Cat Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (cat of filteredCats; track cat.id) {
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img [src]="cat.imageUrl" [alt]="cat.name" class="w-full h-48 object-cover">
-            <div class="p-4">
-              <h2 class="text-xl font-semibold text-text">{{cat.name}}</h2>
-              <p class="text-text">{{cat.breed}} • {{cat.age}} years old</p>
-              <div class="mt-2">
-                <span class="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full mr-2">
-                  {{cat.goodWithKids ? 'Good with kids' : 'Not suitable for kids'}}
-                </span>
-                <span class="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
-                  {{cat.goodWithDogs ? 'Dog friendly' : 'Prefers no dogs'}}
-                </span>
-              </div>
-              <a [routerLink]="['/cats', cat.id]" 
-                 class="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90">
-                View Details
-              </a>
-            </div>
-          </div>
-        }
-
-        @if (filteredCats.length === 0) {
-          <div class="col-span-full text-center py-8">
-            <p class="text-text text-lg">No cats found matching your criteria</p>
-            <button 
-              (click)="resetFilters()"
-              class="mt-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
-            >
-              Reset Filters
-            </button>
-          </div>
-        }
+      <div class="flex items-end">
+        <button
+          (click)="resetFilters()"
+          class="w-full bg-primary/10 text-primary px-4 py-2 rounded-md hover:bg-primary/20"
+        >
+          Reset Filters
+        </button>
       </div>
     </div>
+  </div>
+
+  <!-- Results Count -->
+  <p class="text-text mb-4">
+    Showing {{filteredCats.length}} {{filteredCats.length === 1 ? 'cat' : 'cats'}}
+  </p>
+
+  <!-- Display Content -->
+  @if (displayMode === 'list') {
+    <!-- List Display -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (cat of filteredCats; track cat.id) {
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg">
+          <img [src]="cat.imageUrl" [alt]="cat.name" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h2 class="text-xl font-semibold text-text">{{cat.name}}</h2>
+            <p class="text-text">{{cat.breed}} • {{cat.age}} years old</p>
+            <div class="mt-2">
+              <span class="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full mr-2">
+                {{cat.goodWithKids ? 'Good with kids' : 'Not suitable for kids'}}
+              </span>
+              <span class="text-sm bg-primary/10 text-primary px-2 py-1 rounded-full">
+                {{cat.goodWithDogs ? 'Dog friendly' : 'Prefers no dogs'}}
+              </span>
+            </div>
+            <a [routerLink]="['/cats', cat.id]"
+               class="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90">
+              View Details
+            </a>
+          </div>
+        </div>
+      }
+      @if (filteredCats.length === 0) {
+        <div class="col-span-full text-center py-8">
+          <p class="text-text text-lg">No cats found matching your criteria</p>
+          <button
+            (click)="resetFilters()"
+            class="mt-4 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
+          >
+            Reset Filters
+          </button>
+        </div>
+      }
+    </div>
+  } @else {
+    <!-- Map Display -->
+    <div class="relative h-[600px] bg-gray-200 rounded-lg">
+      <div leaflet
+           [leafletOptions]="mapOptions"
+           (leafletMapReady)="onMapReady($event)"
+           class="h-full w-full">
+      </div>
+      <div *ngIf="mapError" class="absolute inset-0 flex items-center justify-center bg-red-500/80 text-white rounded-lg z-10">
+        {{mapError}}
+      </div>
+    </div>
+  }
+</div>

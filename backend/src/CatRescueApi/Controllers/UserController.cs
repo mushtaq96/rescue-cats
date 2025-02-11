@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CatRescueApi.Models;
+using CatRescueApi.DTOs;
 
 namespace CatRescueApi.Controllers
 {
@@ -25,7 +26,20 @@ namespace CatRescueApi.Controllers
         {
             var result = await _userService.AuthenticateLogin(request.Email, request.Password);
             if (!result.IsSuccess) return Unauthorized(result.Error);
-            return Ok(new { Token = result.Value });
+            // Get the user details
+            var user = await _userService.GetUserByEmail(request.Email);
+            if (user == null) return Unauthorized();
+
+            // Map to DTO
+            var userDto = UserDto.MapToDto(user);
+
+            // Create the response
+            var response = new LoginResponseDto
+            {
+                Token = result.Value,
+                User = userDto
+            };
+            return Ok(response);
         }
         public class LoginRequest
         {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CatRescueApi.Models;
 using CatRescueApi.Services;
+using CatRescueApi.DTOs;
 
 namespace CatRescueApi.Controllers
 {
@@ -21,7 +22,8 @@ namespace CatRescueApi.Controllers
         public async Task<IActionResult> GetCats(string tenantId)
         {
             var cats = await _catService.GetCatsByTenantAsync(tenantId);
-            return Ok(cats);
+            var catDtos = cats.Select(CatDto.MapToDto).ToList();
+            return Ok(catDtos);
         }
 
         // GET api/cats/5
@@ -30,7 +32,8 @@ namespace CatRescueApi.Controllers
         {
             var cat = await _catService.GetCatByIdAsync(id);
             if (cat == null) return NotFound();
-            return Ok(cat);
+            var catDto = CatDto.MapToDto(cat);
+            return Ok(catDto);
         }
 
         // POST api/cats

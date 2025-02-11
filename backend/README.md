@@ -1,6 +1,4 @@
-Here's an improved version of your README with better organization and clarity:
-
-#  We-Rescue-Cats.io Backend API
+#  Cat Rescue Portal Backend API
 
 Enterprise-grade backend API for cat rescue operations, designed for high traffic and scalability.
 
@@ -13,7 +11,56 @@ dotnet restore
 # Run the API
 dotnet run
 ```
+## Project Structure
 
+```plaintext
+├── appsettings.Development.json  # Development environment settings
+├── appsettings.json             # Production environment settings
+├── Backend.http                 # API endpoint definitions
+├── Backend.sln                  # Visual Studio solution file
+├── src/                         # Source code directory
+│   ├── CatRescueApi/           # Main project
+│   │   ├── Controllers/        # API endpoints
+│   │   │   ├── AdoptionsController.cs
+│   │   │   ├── BreedsController.cs
+│   │   │   ├── CatsController.cs
+│   │   │   └── UserController.cs
+│   │   ├── DTOs/              # Data transfer objects
+│   │   │   ├── AddressDto.cs
+│   │   │   ├── AdoptionDto.cs
+│   │   │   ├── BreedDto.cs
+│   │   │   ├── CatDto.cs
+│   │   │   ├── LoginResponseDto.cs
+│   │   │   └── UserDto.cs
+│   │   ├── Models/            # Business domain models
+│   │   │   ├── Adoption.cs
+│   │   │   ├── Breed.cs
+│   │   │   ├── Cat.cs
+│   │   │   ├── Result.cs
+│   │   │   └── User.cs
+│   │   ├── Services/          # Business logic
+│   │   │   ├── AdoptionService.cs
+│   │   │   ├── BreedService.cs
+│   │   │   ├── CatService.cs
+│   │   │   ├── DataService.cs
+│   │   │   └── UserService.cs
+│   │   └── Validators/        # Input validation
+│   │       ├── AdoptionValidator.cs
+│   │       ├── BreedValidator.cs
+│   │       ├── CatValidator.cs
+│   │       └── UserValidator.cs
+│   └── Data/                  # JSON storage files
+│       ├── applications.json  # Adoption applications
+│       ├── breeds.json        # Cat breeds
+│       ├── cats.json          # Available cats
+│       └── users.json         # User information
+└── tests/                     # Unit and integration tests
+    └── CatRescueApi.Tests/     # Test project
+        ├── Controllers/       # Controller tests
+        ├── DTOs/             # DTO tests
+        ├── Models/           # Model tests
+        └── Services/         # Service tests
+```
 ##  Configuration
 
 Add these settings to `appsettings.json`:

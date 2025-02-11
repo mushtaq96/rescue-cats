@@ -5,9 +5,8 @@ namespace CatRescueApi.Models
 {
     public class Adoption
     {
-        [JsonIgnore]
-        public int Id { get; set; }
-        public string UserId { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public int UserId { get; set; }
 
         public int CatId { get; set; }
 
@@ -15,5 +14,10 @@ namespace CatRescueApi.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public Address Location { get; set; } = new Address();
+        public string Reason { get; set; } = string.Empty;
+        public string PhoneNo { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 }

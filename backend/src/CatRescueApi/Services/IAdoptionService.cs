@@ -4,8 +4,9 @@ namespace CatRescueApi.Services
     public interface IAdoptionService
     {
         Task<Result<Adoption>> SubmitAdoption(Adoption adoption);
-        Task<Adoption?> GetAdoptionById(int id);
-        Task<Result<bool>> UpdateStatus(int id, string newStatus); // New method for status updates
+        Task<Adoption?> GetAdoptionById(string id);
+        Task<Result<bool>> UpdateStatus(string id, string newStatus);
         Task<List<Adoption>> GetAllAdoptions();
+        Task<bool> CheckIfUserHasApplied(string catId, string userId);
     }
 }

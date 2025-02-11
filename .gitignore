@@ -164,4 +164,4 @@ coverage/
 /libpeerconnection.log
 /connect.lock
 .sass-cache
-/src/translations/template.*
+/src/translations/template.*backend/src/CatRescueApi/appsettings.json

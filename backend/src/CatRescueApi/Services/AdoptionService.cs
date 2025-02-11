@@ -37,10 +37,6 @@ namespace CatRescueApi.Services
             {
                 return Result<Adoption>.Fail("Another application for this cat is already pending.");
             }
-            // Assign a unique ID
-            adoption.Id = applicationsList.Count > 0 ? applicationsList.Max(a => a.Id) + 1 : 1;
-            adoption.CreatedAt = DateTime.UtcNow;
-            adoption.Status = "pending";
 
             applicationsList.Add(adoption);
             data["applications"] = JToken.FromObject(applicationsList);
@@ -55,12 +51,12 @@ namespace CatRescueApi.Services
             var applicationsArray = data["applications"] as JArray;
             return applicationsArray?.ToObject<List<Adoption>>() ?? new List<Adoption>();
         }
-        public async Task<Adoption?> GetAdoptionById(int id)
+        public async Task<Adoption?> GetAdoptionById(string id)
         {
             var adoptions = await GetAllAdoptions();
             return adoptions.FirstOrDefault(a => a.Id == id);
         }
-        private bool PerformBackGroundCheck(string userId)
+        private bool PerformBackGroundCheck(int userId)
         {
             // Simulate a background check
             Thread.Sleep(5000);
@@ -75,7 +71,7 @@ namespace CatRescueApi.Services
         };
 
         // Update status method
-        public async Task<Result<bool>> UpdateStatus(int id, string newStatus)
+        public async Task<Result<bool>> UpdateStatus(string id, string newStatus)
         {
             var adoptions = await GetAllAdoptions();
             var adoption = adoptions.FirstOrDefault(a => a.Id == id);
@@ -100,6 +96,12 @@ namespace CatRescueApi.Services
             await SaveJsonAsync("applications", data);
 
             return Result<bool>.Ok(true);
+        }
+
+        public async Task<bool> CheckIfUserHasApplied(string catId, string userId)
+        {
+            var adoptions = await GetAllAdoptions();
+            return adoptions.Any(a => a.CatId == int.Parse(catId) && a.UserId == int.Parse(userId) && a.Status == "pending");
         }
     }
 }
