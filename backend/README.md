@@ -62,8 +62,11 @@ dotnet run
         └── Services/         # Service tests
 ```
 ##  Configuration
+### ⚠️ Warning: Do Not Commit This File
+### Steps to Create `appsettings.json`
 
-Add these settings to `appsettings.json`:
+1. Create a file named `appsettings.json` in the root directory of the project.
+2. Add the following configuration:
 
 ```json
 {
@@ -73,6 +76,8 @@ Add these settings to `appsettings.json`:
   "SenderEmail": "your-sender-email"
 }
 ```
+Add these settings to `appsettings.json`:
+Ensure that `appsettings.json` is listed in `.gitignore` to avoid accidentally committing sensitive information.
 
 ##  Core Features
 
