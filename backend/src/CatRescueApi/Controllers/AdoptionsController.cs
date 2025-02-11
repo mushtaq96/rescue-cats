@@ -27,14 +27,14 @@ namespace CatRescueApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdoptionDto>> GetAdoption(int id)
+        public async Task<ActionResult<AdoptionDto>> GetAdoption(string id)
         {
             var adoption = await _adoptionService.GetAdoptionById(id);
             if (adoption == null) return NotFound();
             return Ok(AdoptionDto.MapToDto(adoption));
         }
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(int id, [FromBody] string newStatus)
+        public async Task<IActionResult> UpdateStatus(string id, [FromBody] string newStatus)
         {
             var result = await _adoptionService.UpdateStatus(id, newStatus);
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
